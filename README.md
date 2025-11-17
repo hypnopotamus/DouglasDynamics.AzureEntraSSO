@@ -1,0 +1,1 @@
+# DouglasDynamics.AzureEntraSSO.ProofOfConcept
