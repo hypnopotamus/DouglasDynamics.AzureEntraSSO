@@ -7,7 +7,7 @@ import { Configuration, BackEndForFrontendApi, type BackEndForFrontendApiInterfa
 
 const client: BackEndForFrontendApiInterface = new BackEndForFrontendApi(new Configuration({ basePath: "/api" }));
 
-function App() {
+export function App() {
   const [userInfo, setUserInfo] = useState<UserInfo | undefined>()
   const [userClaims, setUserClaims] = useState<Claim[] | undefined>()
 
@@ -49,5 +49,3 @@ function App() {
     </>
   )
 }
-
-export default App

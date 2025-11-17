@@ -1,5 +1,7 @@
 <Solution>
+  <Project Path="BackEndTwo.Test/BackEndTwo.Test.csproj" Id="7351335b-23d4-46a3-a2c9-3057bf67a9a9" />
   <Project Path="BackEndForFrontend/BackEndForFrontend.csproj" />
+  <Project Path="BackEndOne.Test/BackEndOne.Test.csproj" Id="eee99231-696e-407a-a7fb-9b118bad8fd4" />
   <Project Path="BackEndOne/BackEndOne.csproj" />
   <Project Path="BackEndTwo/BackEndTwo.csproj" />
   <Project Path="DouglasDynamics.AzureEntraSSO.AppHost/DouglasDynamics.AzureEntraSSO.AppHost.csproj" Id="6301301b-5079-4273-a633-56971a8edd75" />

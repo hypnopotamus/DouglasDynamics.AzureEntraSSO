@@ -17,9 +17,7 @@ public class EchoUserInfoController(IBackendOneClient backendOne) : ControllerBa
     public async Task<UserInfo> Get() =>
         new
         (
-            User.Identity?.IsAuthenticated == true
-                ? User.Identity?.Name ?? "Anonymous"
-                : "Anonymous",
+            User.Identity?.Name ?? "Anonymous",
             User.Claims.Select(c => new Claim(c.Type, c.Value, "BackEndTwo"))
                 .Concat
                 (
