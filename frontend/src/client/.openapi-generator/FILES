@@ -1,0 +1,11 @@
+.openapi-generator-ignore
+apis/BackEndForFrontendApi.ts
+apis/index.ts
+docs/BackEndForFrontendApi.md
+docs/Claim.md
+docs/UserInfo.md
+index.ts
+models/Claim.ts
+models/UserInfo.ts
+models/index.ts
+runtime.ts

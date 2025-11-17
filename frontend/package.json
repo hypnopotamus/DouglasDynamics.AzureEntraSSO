@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-client": "cross-env JAVA_OPTS='-Dio.swagger.v3.parser.util.RemoteUrl.trustAll=true' openapi-generator-cli generate -g typescript-fetch -i https://localhost:7010/openapi/v1.json -o ./src/client --additional-properties=withInterfaces=true,supportsES6=true,validationAttributes=true,useErasableSyntax=true,useObjectParameters=true"
   },
   "dependencies": {
     "react": "^19.2.0",
@@ -15,10 +16,12 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@openapitools/openapi-generator-cli": "^2.25.0",
     "@types/node": "^24.10.0",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react": "^5.1.0",
+    "cross-env": "^10.1.0",
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",

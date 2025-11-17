@@ -2,9 +2,22 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import type { Claim, UserInfo } from './client/models'
+import { Configuration, BackEndForFrontendApi, type BackEndForFrontendApiInterface } from './client'
+
+const client: BackEndForFrontendApiInterface = new BackEndForFrontendApi(new Configuration({ basePath: "/api" }));
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [userInfo, setUserInfo] = useState<UserInfo | undefined>()
+  const [userClaims, setUserClaims] = useState<Claim[] | undefined>()
+
+  const fetchUserInfo = async () => {
+    setUserInfo(await client.userInfoGet())
+  }
+
+  const fetchUserClaims = async () => {
+    setUserClaims(await client.userBackendoneClaimsGet())
+  }
 
   return (
     <>
@@ -18,16 +31,21 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+        <button onClick={fetchUserInfo}>
+          get user info (be1+2)
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+        <div>
+          info: {userInfo && JSON.stringify(userInfo)}
+        </div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <div className="card">
+        <button onClick={fetchUserClaims}>
+          get user claims (be1)
+        </button>
+        <div>
+          claims: {userClaims && JSON.stringify(userClaims)}
+        </div>
+      </div>
     </>
   )
 }
