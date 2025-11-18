@@ -11,6 +11,10 @@
   </Project>
   <Project Path="DouglasDynamics.AzureEntraSSO.AppHost/DouglasDynamics.AzureEntraSSO.AppHost.csproj" Id="6301301b-5079-4273-a633-56971a8edd75" />
   <Project Path="DouglasDynamics.AzureEntraSSO.ServiceDefaults/DouglasDynamics.AzureEntraSSO.ServiceDefaults.csproj" />
+  <Project Path="endToEnd/endtoend.esproj">
+    <Build />
+    <Deploy />
+  </Project>
   <Project Path="frontend/frontend.esproj">
     <Build />
     <Deploy />

@@ -16,13 +16,15 @@ builder.AddViteApp
         Path.GetDirectoryName(new Projects.frontend().ProjectPath) ?? throw new InvalidOperationException()
     )
     .WaitFor(bff)
-    .WithReference(bff, "api");
+    .WithReference(bff, "api")
+    .OnResourceEndpointsAllocated((e, _, cancellationToken) => File.WriteAllTextAsync($"{e.Name}.port", e.GetEndpoint("http").Url, cancellationToken));
 builder.AddViteApp
     (
         "dicefrontend",
         Path.GetDirectoryName(new Projects.dicefrontend().ProjectPath) ?? throw new InvalidOperationException()
     )
     .WaitFor(be3)
-    .WithReference(be3, "api");
+    .WithReference(be3, "api")
+    .OnResourceEndpointsAllocated((e, _, cancellationToken) => File.WriteAllTextAsync($"{e.Name}.port", e.GetEndpoint("http").Url, cancellationToken));
 
 builder.Build().Run();
