@@ -15,7 +15,9 @@
   <ItemGroup>
     <ProjectReference Include="..\BackEndForFrontend\BackEndForFrontend.csproj" />
     <ProjectReference Include="..\BackEndOne\BackEndOne.csproj" />
+    <ProjectReference Include="..\BackEndThree\BackEndThree.csproj" />
     <ProjectReference Include="..\BackEndTwo\BackEndTwo.csproj" />
+    <ProjectReference Include="..\dicefrontend\dicefrontend.esproj" />
     <ProjectReference Include="..\frontend\frontend.esproj" />
   </ItemGroup>
 

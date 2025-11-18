@@ -1,5 +1,5 @@
 {
-  "name": "douglasdynamics.azureentrasso.frontend",
+  "name": "dicefrontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "generate-client": "cross-env JAVA_OPTS='-Dio.swagger.v3.parser.util.RemoteUrl.trustAll=true' openapi-generator-cli generate -g typescript-fetch -i https://localhost:7010/openapi/v1.json -o ./src/client --additional-properties=withInterfaces=true,supportsES6=true,validationAttributes=true,useErasableSyntax=true,useObjectParameters=true"
+    "generate-client": "cross-env JAVA_OPTS='-Dio.swagger.v3.parser.util.RemoteUrl.trustAll=true' openapi-generator-cli generate -g typescript-fetch -i https://localhost:7261/openapi/v1.json -o ./src/client --additional-properties=withInterfaces=true,supportsES6=true,validationAttributes=true,useErasableSyntax=true,useObjectParameters=true"
   },
   "dependencies": {
     "react": "^19.2.0",
