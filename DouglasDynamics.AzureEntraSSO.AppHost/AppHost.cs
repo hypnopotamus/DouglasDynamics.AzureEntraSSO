@@ -13,11 +13,14 @@ var bff = builder.AddProject<Projects.BackEndForFrontend>("backendforfrontend")
 builder.AddViteApp
     (
         "frontend",
-        Path.GetDirectoryName(new Projects.frontend().ProjectPath) ?? throw new InvalidOperationException()
+        Path.GetDirectoryName(new Projects.frontend().ProjectPath) ?? throw new InvalidOperationException(),
+        "start"
     )
     .WaitFor(bff)
     .WithReference(bff, "api")
+    //todo: needs static host port for oauth redirect uris
     .OnResourceEndpointsAllocated((e, _, cancellationToken) => File.WriteAllTextAsync($"{e.Name}.port", e.GetEndpoint("http").Url, cancellationToken));
+    ;
 builder.AddViteApp
     (
         "dicefrontend",
@@ -25,6 +28,7 @@ builder.AddViteApp
     )
     .WaitFor(be3)
     .WithReference(be3, "api")
+    //todo: needs static host port for oauth redirect uris
     .OnResourceEndpointsAllocated((e, _, cancellationToken) => File.WriteAllTextAsync($"{e.Name}.port", e.GetEndpoint("http").Url, cancellationToken));
 
 builder.Build().Run();
