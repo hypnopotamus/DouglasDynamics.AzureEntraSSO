@@ -16,19 +16,25 @@ builder.AddViteApp
         Path.GetDirectoryName(new Projects.frontend().ProjectPath) ?? throw new InvalidOperationException(),
         "start"
     )
+    .WithEndpoint("http", endpoint =>
+    {
+        endpoint.Port = 64634;
+        endpoint.UriScheme = "http";
+    })
+    //.WithHttpEndpoint(64634)
     .WaitFor(bff)
-    .WithReference(bff, "api")
-    //todo: needs static host port for oauth redirect uris
-    .OnResourceEndpointsAllocated((e, _, cancellationToken) => File.WriteAllTextAsync($"{e.Name}.port", e.GetEndpoint("http").Url, cancellationToken));
-    ;
+    .WithReference(bff, "api");
 builder.AddViteApp
     (
         "dicefrontend",
         Path.GetDirectoryName(new Projects.dicefrontend().ProjectPath) ?? throw new InvalidOperationException()
     )
+    .WithEndpoint("http", endpoint =>
+    {
+        endpoint.Port = 64635;
+        endpoint.UriScheme = "http";
+    })
     .WaitFor(be3)
-    .WithReference(be3, "api")
-    //todo: needs static host port for oauth redirect uris
-    .OnResourceEndpointsAllocated((e, _, cancellationToken) => File.WriteAllTextAsync($"{e.Name}.port", e.GetEndpoint("http").Url, cancellationToken));
+    .WithReference(be3, "api");
 
 builder.Build().Run();
