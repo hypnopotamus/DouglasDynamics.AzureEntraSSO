@@ -19,6 +19,10 @@ They will also show how to log in to one front end and not need to log into the 
 - Visual Studio
 - Visual Studio Code
 
+#### setup
+
+`dotnet tool restore` will install the extension tools in the local manifest.  Right now only EF tools (`dotnet ef`). Aspire orchestration will do this automatically.
+
 ## Running the App
 
 ```
