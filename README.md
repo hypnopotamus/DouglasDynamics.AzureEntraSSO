@@ -13,6 +13,8 @@ They will also show how to log in to one front end and not need to log into the 
 - Docker
 - angular CLI
 - Java 17 JDK
+- Terraform CLI
+   - Azure CLI
 
 #### recommended tools
 
@@ -22,6 +24,8 @@ They will also show how to log in to one front end and not need to log into the 
 #### setup
 
 `dotnet tool restore` will install the extension tools in the local manifest.  Right now only EF tools (`dotnet ef`). Aspire orchestration will do this automatically.
+
+to initialize a new environment for terraform run the [init.ps1](./Infrastructure/init.ps1) after an `az login` with an account that can create storage accounts and resource groups.  This initializes the remote state store for the environment.
 
 ## Running the App
 
