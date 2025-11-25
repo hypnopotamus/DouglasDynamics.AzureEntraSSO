@@ -22,6 +22,10 @@ provider "azuread" {
   tenant_id = var.entra_tenant_id
 }
 
+locals {
+  placeholder_container = "mcr.microsoft.com/k8se/quickstart:latest"
+}
+
 data "azurerm_client_config" "current" {}
 
 resource "azurerm_resource_group" "douglas_dynamics" {
@@ -92,39 +96,48 @@ resource "azurerm_role_assignment" "acr_pull" {
 }
 
 module "backend_for_frontend" {
-  source                       = "./modules/Application"
+  source                       = "./modules/API"
   name                         = "app-dd-backend-for-frontend"
   resource_group_name          = azurerm_resource_group.douglas_dynamics.name
   container_app_environment_id = azurerm_container_app_environment.container_app_environment.id
-  container_image              = "mcr.microsoft.com/k8se/quickstart:latest"
-  #container_image              = "${azurerm_container_registry.acr.login_server}/backend-for-frontend:latest"
+  container_image              = local.placeholder_container
 }
 
 module "backendone" {
-  source                       = "./modules/Application"
+  source                       = "./modules/API"
   name                         = "app-dd-backendone"
   resource_group_name          = azurerm_resource_group.douglas_dynamics.name
   container_app_environment_id = azurerm_container_app_environment.container_app_environment.id
-  container_image              = "mcr.microsoft.com/k8se/quickstart:latest"
-  #container_image              = "${azurerm_container_registry.acr.login_server}/backendone:latest"
+  container_image              = local.placeholder_container
 }
 
 module "backendtwo" {
-  source                       = "./modules/Application"
+  source                       = "./modules/API"
   name                         = "app-dd-backendtwo"
   resource_group_name          = azurerm_resource_group.douglas_dynamics.name
   container_app_environment_id = azurerm_container_app_environment.container_app_environment.id
-  container_image              = "mcr.microsoft.com/k8se/quickstart:latest"
-  #container_image              = "${azurerm_container_registry.acr.login_server}/backendtwo:latest"
+  container_image              = local.placeholder_container
 
 }
 
 module "backendthree" {
-  source                       = "./modules/Application"
+  source                       = "./modules/API"
   name                         = "app-dd-backendthree"
   resource_group_name          = azurerm_resource_group.douglas_dynamics.name
   container_app_environment_id = azurerm_container_app_environment.container_app_environment.id
-  container_image              = "mcr.microsoft.com/k8se/quickstart:latest"
-  #container_image              = "${azurerm_container_registry.acr.login_server}/backendthree:latest"
+  container_image              = local.placeholder_container
+}
 
+module "frontend" {
+  source              = "./modules/single-page-app"
+  name                = "spa-dd-frontend"
+  resource_group_name = azurerm_resource_group.douglas_dynamics.name
+  location            = azurerm_resource_group.douglas_dynamics.location
+}
+
+module "dice_frontend" {
+  source              = "./modules/single-page-app"
+  name                = "spa-dd-dice-frontend"
+  resource_group_name = azurerm_resource_group.douglas_dynamics.name
+  location            = azurerm_resource_group.douglas_dynamics.location
 }
