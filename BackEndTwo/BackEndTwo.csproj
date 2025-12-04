@@ -11,18 +11,22 @@
   <ItemGroup>
     <OpenApiReference Include="OpenAPIs\BackEndOne\v1.json" Namespace="BackEndTwo.BackEndOne">
       <SourceUri>https://localhost:7178/openapi/v1.json</SourceUri>
-	  <Options>/JsonLibrary:SystemTextJson</Options>
+	  <Options>/JsonLibrary:SystemTextJson /GenerateClientInterfaces:true /ClientBaseInterface:BackEndTwo.OpenAPIs.BackEndOne.IBackendOneClient /HttpClientType:BackEndTwo.Authorization.IHttpClient</Options>
     </OpenApiReference>
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Identity" Version="1.17.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Azure.AppConfiguration.AspNetCore" Version="8.4.0" />
     <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="10.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Identity.Web" Version="4.1.1" />
+    <PackageReference Include="Microsoft.Identity.Web.DownstreamApi" Version="4.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
-    <PackageReference Include="NSwag.ApiDescription.Client" Version="14.6.2">
+    <PackageReference Include="NSwag.ApiDescription.Client" Version="14.6.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

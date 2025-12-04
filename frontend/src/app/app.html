@@ -181,6 +181,7 @@
 
   .card {
     padding: 2em;
+    flex: 1;
   }
 </style>
 
@@ -214,21 +215,29 @@
       </svg>
       <h1>Hello, {{ title() }}</h1>
       <p>Congratulations! Your app is running. 🎉</p>
-      <div class="card">
-        <button (click)="fetchUserInfo()">
-          get user info (be1+2)
-        </button>
+      <div class="content">
+        @if (!loggedIn()) {
         <div>
-          info: {{ userInfo() | json }}
+          <button class="btn btn-secondary" (click)="login()">Sign In</button>
         </div>
-      </div>
-      <div class="card">
-        <button (click)="fetchUserClaims()">
-          get user claims (be1)
-        </button>
-        <div>
-          claims: {{ userClaims() | json }}
+        } @else {
+        <div class="card">
+          <button (click)="fetchUserInfo()">
+            get user info (be1+2)
+          </button>
+          <pre>
+            {{ userInfo() | json }}
+          </pre>
         </div>
+        <div class="card">
+          <button (click)="fetchUserClaims()">
+            get user claims (be1)
+          </button>
+          <pre>
+            {{ userClaims() | json }}
+          </pre>
+        </div>
+        }
       </div>
     </div>
     <div class="divider" role="separator" aria-label="Divider"></div>
