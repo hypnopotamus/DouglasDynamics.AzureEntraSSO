@@ -1,4 +1,3 @@
-.openapi-generator-ignore
 apis/DiceApi.ts
 apis/index.ts
 docs/DiceApi.md

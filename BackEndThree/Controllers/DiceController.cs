@@ -1,3 +1,4 @@
+using BackEndThree.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -5,7 +6,7 @@ namespace BackEndThree.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-[AllowAnonymous]
+[Authorize(Policy = Policy.Name)]
 public class DiceController : ControllerBase
 {
     private static readonly Random Die = new(DateTime.Now.Millisecond);

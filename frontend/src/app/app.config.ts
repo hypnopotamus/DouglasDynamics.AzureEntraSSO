@@ -1,14 +1,18 @@
-import { ApplicationConfig, InjectionToken, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { HttpHeaders, provideHttpClient } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { routes } from './app.routes';
-import { provideApi } from '../client';
+import { AuthModule } from './auth.module';
+import { provideApi as provideBackendOne } from '../client/backendone';
+import { provideApi as provideBackendTwo } from '../client/backendtwo';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideHttpClient(),
-    provideApi('/api'),
+    importProvidersFrom(AuthModule),
+    provideBackendOne('/api'),
+    provideBackendTwo('/api'),
   ]
 };

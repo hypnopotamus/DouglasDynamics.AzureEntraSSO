@@ -1,0 +1,17 @@
+.gitignore
+README.md
+api.base.service.ts
+api.module.ts
+api/api.ts
+api/echoUserInfo.service.ts
+api/echoUserInfo.serviceInterface.ts
+configuration.ts
+encoder.ts
+git_push.sh
+index.ts
+model/claim.ts
+model/models.ts
+model/userInfo.ts
+param.ts
+provide-api.ts
+variables.ts

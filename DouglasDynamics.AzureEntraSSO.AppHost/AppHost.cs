@@ -21,7 +21,7 @@ var migration = builder.AddExecutable(
         "backendone-migration",
         "dotnet",
         Path.GetDirectoryName(new Projects.BackEndOne().ProjectPath) ?? throw new InvalidOperationException(),
-        "ef", "database", "update"
+        "ef", "database", "update", "--no-build"
     )
     .WaitForCompletion(tools)
     .WaitFor(db1)
@@ -45,10 +45,9 @@ var be2 = builder.AddProject<Projects.BackEndTwo>("backendtwo")
     .WithReference(be1);
 var be3 = builder.AddProject<Projects.BackEndThree>("backendthree");
 var bff = builder.AddProject<Projects.BackEndForFrontend>("backendforfrontend")
-    .WaitFor(be1)
-    .WaitFor(be2)
     .WithReference(be1)
-    .WithReference(be2);
+    .WithReference(be2)
+    .WithReference(be3);
 
 builder.AddViteApp
     (
@@ -61,7 +60,6 @@ builder.AddViteApp
         http.Port = 64634;
         http.UriScheme = "http";
     })
-    .WaitFor(bff)
     .WithReference(bff, "api");
 builder.AddViteApp
     (
@@ -73,7 +71,6 @@ builder.AddViteApp
         http.Port = 64635;
         http.UriScheme = "http";
     })
-    .WaitFor(be3)
-    .WithReference(be3, "api");
+    .WithReference(bff, "api");
 
 builder.Build().Run();

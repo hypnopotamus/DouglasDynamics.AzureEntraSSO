@@ -3,11 +3,13 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "npm run prepare-config && ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "generate-client": "cross-env JAVA_OPTS='-Dio.swagger.v3.parser.util.RemoteUrl.trustAll=true' openapi-generator-cli generate -g typescript-angular -i https://localhost:7010/openapi/v1.json -o ./src/client --additional-properties=withInterfaces=true,supportsES6=true"
+    "prepare-config": "node ./src/environments/prepareAppConfig.ts",
+    "generate-backendone-client": "cross-env JAVA_OPTS='-Dio.swagger.v3.parser.util.RemoteUrl.trustAll=true' openapi-generator-cli generate -g typescript-angular -i https://localhost:7178/openapi/v1.json -o ./src/client/backendone --additional-properties=withInterfaces=true,supportsES6=true",
+    "generate-backendtwo-client": "cross-env JAVA_OPTS='-Dio.swagger.v3.parser.util.RemoteUrl.trustAll=true' openapi-generator-cli generate -g typescript-angular -i https://localhost:7284/openapi/v1.json -o ./src/client/backendtwo --additional-properties=withInterfaces=true,supportsES6=true"
   },
   "prettier": {
     "printWidth": 100,
@@ -30,7 +32,13 @@
     "@angular/forms": "^21.0.0",
     "@angular/platform-browser": "^21.0.0",
     "@angular/router": "^21.0.0",
+    "@azure/app-configuration-provider": "^2.2.0",
+    "@azure/identity": "^4.13.0",
+    "@azure/msal-angular": "^4.0.22",
+    "@azure/msal-browser": "^4.26.2",
+    "bootstrap": "^5.3.8",
     "rxjs": "~7.8.0",
+    "ts-deepmerge": "^7.0.3",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
@@ -42,6 +50,7 @@
     "@testing-library/dom": "^10.0.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/user-event": "^14.5.2",
+    "@types/node": "^24.10.1",
     "cross-env": "^10.1.0",
     "jsdom": "^27.1.0",
     "typescript": "~5.9.2",

@@ -12,10 +12,16 @@
     "generate-client": "cross-env JAVA_OPTS='-Dio.swagger.v3.parser.util.RemoteUrl.trustAll=true' openapi-generator-cli generate -g typescript-fetch -i https://localhost:7261/openapi/v1.json -o ./src/client --additional-properties=withInterfaces=true,supportsES6=true,validationAttributes=true,useErasableSyntax=true,useObjectParameters=true"
   },
   "dependencies": {
+    "@azure/msal-browser": "^4.26.2",
+    "@azure/msal-react": "^3.0.22",
+    "bootstrap": "^5.3.8",
     "react": "^19.2.0",
+    "react-bootstrap": "^2.10.10",
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
+    "@azure/app-configuration-provider": "^2.2.0",
+    "@azure/identity": "^4.13.0",
     "@eslint/js": "^9.39.1",
     "@openapitools/openapi-generator-cli": "^2.25.1",
     "@testing-library/dom": "^10.4.1",

@@ -1,13 +1,15 @@
-﻿using BackEndTwo.OpenAPIs.BackEndOne;
+﻿using BackEndTwo.Authorization;
+using BackEndTwo.OpenAPIs.BackEndOne;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Abstractions;
 
 namespace BackEndTwo.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[AllowAnonymous]
-public class EchoUserInfoController(IBackendOneClient backendOne) : ControllerBase
+[Authorize(Policy = Policy.Name)]
+public class EchoUserInfoController(IBackendOneClient backendOne, IDownstreamApi downstramApi) : ControllerBase
 {
     public record Claim(string Type, string Value, string Source);
 

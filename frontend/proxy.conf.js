@@ -3,14 +3,13 @@ const PROXY_CONFIG = {
         "target": process.env.services__api__https__0,
         "secure": false,
         "logLevel": "debug",
-        "pathRewrite": { '^/api': '' },
+        "pathRewrite": { '/api': '/user' },
         configure: (proxy, _options) => {
             proxy.on("error", (err, _req, _res) => {
                 console.log("proxy error", err);
             });
             proxy.on("proxyReq", (proxyReq, req, _res) => {
                 const headers = proxyReq.getHeaders();
-                // console.log(headers);
                 console.log(
                     req.method,
                     req.url,

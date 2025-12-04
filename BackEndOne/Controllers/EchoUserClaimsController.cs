@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using BackEndOne.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BackEndOne.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-[AllowAnonymous]
+[Authorize(Policy = Policy.Name)]
 public class EchoUserClaimsController(DbContext context) : ControllerBase
 {
     public record Claim(string Type, string Value, string Source);

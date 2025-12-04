@@ -57,7 +57,7 @@ end to end tests use Playwright in the `endtoend` project.
 They can be executed with `npm t` or with the playwright vscode plugin.
 Use `npm run test:ui` to open the playwright UI in order to see the test snapshots of browser state
 
-if the aspire project is not started these tests will attempt to start it.  If it is already running they will test against the already running instance.
+if the aspire project is not started these tests will attempt to start it.  If it is already running they will test against the already running instance (useful to know for debugging backend behavior during E2E testing).
 
 ## Documentation
 
