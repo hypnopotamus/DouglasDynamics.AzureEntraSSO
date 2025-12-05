@@ -136,8 +136,7 @@ module "backend_for_frontend" {
 
   dev_group_id = azuread_group.dev.object_id
 
-  #todo: and also the redirect URIs based on the front end modules creating resources below
-  oauth_redirect_uris = concat(var.frontend_redirect_uris, var.dice_frontend_redirect_uris)
+  authorized_clients = [module.frontend.registration_client_id, module.dice_frontend.registration_client_id]
   downstream_apis = {
     backendone   = module.backendone.registration_client_id
     backendtwo   = module.backendtwo.registration_client_id
@@ -239,8 +238,11 @@ module "frontend" {
   name                = "spa-dd-frontend"
   resource_group_name = azurerm_resource_group.douglas_dynamics.name
   location            = azurerm_resource_group.douglas_dynamics.location
-  entra_client_id     = module.backend_for_frontend.registration_client_id
-  dev_group_id        = azuread_group.dev.object_id
+
+  oauth_redirect_uris = var.frontend_redirect_uris
+  single_signout_uri  = var.frontend_logout_uri
+
+  dev_group_id = azuread_group.dev.object_id
 }
 
 module "dice_frontend" {
@@ -248,6 +250,9 @@ module "dice_frontend" {
   name                = "spa-dd-dice-frontend"
   resource_group_name = azurerm_resource_group.douglas_dynamics.name
   location            = azurerm_resource_group.douglas_dynamics.location
-  entra_client_id     = module.backend_for_frontend.registration_client_id
-  dev_group_id        = azuread_group.dev.object_id
+
+  oauth_redirect_uris = var.dice_frontend_redirect_uris
+  single_signout_uri  = var.dice_frontend_logout_uri
+
+  dev_group_id = azuread_group.dev.object_id
 }

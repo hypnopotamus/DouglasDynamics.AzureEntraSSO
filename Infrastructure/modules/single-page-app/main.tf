@@ -32,6 +32,42 @@ resource "azurerm_role_assignment" "configuration_writer" {
   principal_id         = data.azurerm_client_config.current.object_id
 }
 
+#todo: logout url (i.e. frontchannel logout) needs entra to be on the same custom domain as the frontend app
+#  otherwise browser default security policies will prevent the hidden iframe from interacting with cookies / localstorage
+resource "azuread_application_registration" "registration" {
+  display_name = var.name
+
+  implicit_access_token_issuance_enabled = true
+  implicit_id_token_issuance_enabled     = true
+  logout_url                             = var.single_signout_uri
+}
+
+resource "azuread_application_identifier_uri" "identifier" {
+  application_id = azuread_application_registration.registration.id
+  identifier_uri = "api://${azuread_application_registration.registration.client_id}"
+}
+
+resource "random_uuid" "access_id" {}
+
+resource "azuread_application_permission_scope" "access" {
+  application_id = azuread_application_registration.registration.id
+  scope_id       = random_uuid.access_id.id
+  value          = "access"
+  type           = "Admin"
+
+  admin_consent_description  = "access the application"
+  admin_consent_display_name = "access"
+}
+
+resource "azuread_application_redirect_uris" "spa_redirects" {
+  count = length(var.oauth_redirect_uris) == 0 ? 0 : 1
+
+  application_id = azuread_application_registration.registration.id
+  type           = "SPA"
+
+  redirect_uris = var.oauth_redirect_uris
+}
+
 resource "azurerm_app_configuration" "configuration" {
   name                = "ac-${var.name}"
   resource_group_name = var.resource_group_name
@@ -53,18 +89,7 @@ resource "azurerm_app_configuration_key" "authority" {
 resource "azurerm_app_configuration_key" "client_id" {
   configuration_store_id = azurerm_app_configuration.configuration.id
   key                    = "VITE_AUTH_CLIENT_ID"
-  value                  = var.entra_client_id
+  value                  = azuread_application_registration.registration.client_id
 
   depends_on = [azurerm_role_assignment.configuration_writer]
 }
-
-#todo: needs the API gateway so that I can give the redirect URI from that here to give to CI for .env
-#  and the gateway itself can supply it to itself as it replaces the BFF.
-#  trying to use the static web app URL will create a cycle between BFF and the SPA modules
-# resource "azurerm_app_configuration_key" "redirect_uri" {
-#   configuration_store_id = azurerm_app_configuration.configuration.id
-#   key                    = "VITE_AUTH_REDIRECT_URI"
-#   value                  = 
-
-#   depends_on = [azurerm_role_assignment.configuration_writer]
-# }

@@ -1,20 +1,32 @@
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/msal-react";
 import { Button, Container } from "react-bootstrap";
 import { CoinFlip } from "./CoinFlip";
-import { loginRequest } from './authConfig';
+import { loginRequest, logoutRequest } from './authConfig';
 import './App.css'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 
 export const App = () => {
   const { instance } = useMsal();
-  const activeAccount = instance.getActiveAccount();
 
   const handleLogin = async () => {
     try {
-      await instance.loginRedirect(loginRequest)
+      await instance.ssoSilent(loginRequest);
+    }
+    catch (error) {
+      try {
+        await instance.loginRedirect(loginRequest);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await instance.logout(logoutRequest);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -30,11 +42,12 @@ export const App = () => {
       </div>
       <h1>Vite + React</h1>
       <AuthenticatedTemplate>
-        {activeAccount ? (
-          <Container>
-            <CoinFlip />
-          </Container>
-        ) : null}
+        <Container>
+          <Button className="signInButton" onClick={handleLogout} variant="secondary">
+            Sign out
+          </Button>
+          <CoinFlip />
+        </Container>
       </AuthenticatedTemplate>
       <UnauthenticatedTemplate>
         <Button className="signInButton" onClick={handleLogin} variant="primary">

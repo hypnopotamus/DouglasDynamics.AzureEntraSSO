@@ -21,6 +21,10 @@ export default defineConfig(({ mode }) => ({
 
     server: {
         port: env["PORT"] ? parseInt(env["PORT"]) : 64634,
+        https: {
+            key: env["KEY"],
+            cert: env["CERT"]
+        },
         proxy: {
             '^/api': {
                 target: env["services__api__https__0"] ?? 'https://localhost:7261',

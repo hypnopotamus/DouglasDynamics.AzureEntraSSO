@@ -49,6 +49,19 @@ var bff = builder.AddProject<Projects.BackEndForFrontend>("backendforfrontend")
     .WithReference(be2)
     .WithReference(be3);
 
+builder.AddExecutable(
+    "trustCert",
+    "dotnet",
+    ".",
+    "dev-certs", "https", "--check", "--trust"
+);
+var exportCert = builder.AddExecutable(
+    "exportCert",
+    "dotnet",
+    ".",
+    "dev-certs", "https", "--export-path", "cert.pem", "--format", "PEM", "--no-password"
+);
+
 builder.AddViteApp
     (
         "frontend",
@@ -58,8 +71,10 @@ builder.AddViteApp
     .WithEndpoint("http", http =>
     {
         http.Port = 64634;
-        http.UriScheme = "http";
+        http.UriScheme = "https";
     })
+    .WaitFor(exportCert)
+    .WithArgs("--ssl", "--ssl-cert", Path.GetFullPath("cert.pem"), "--ssl-key", Path.GetFullPath("cert.key"))
     .WithReference(bff, "api");
 builder.AddViteApp
     (
@@ -69,8 +84,11 @@ builder.AddViteApp
     .WithEndpoint("http", http =>
     {
         http.Port = 64635;
-        http.UriScheme = "http";
+        http.UriScheme = "https";
     })
+    .WaitFor(exportCert)
+    .WithEnvironment("CERT", Path.GetFullPath("cert.pem"))
+    .WithEnvironment("KEY", Path.GetFullPath("cert.key"))
     .WithReference(bff, "api");
 
 builder.Build().Run();

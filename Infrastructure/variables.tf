@@ -14,10 +14,20 @@ variable "frontend_redirect_uris" {
   default     = []
 }
 
+variable "frontend_logout_uri" {
+  type        = string
+  description = "frontchannel logout url for the frontend"
+}
+
 variable "dice_frontend_redirect_uris" {
   type        = list(string)
   description = "redirect URIs for the dice SPA"
   default     = []
+}
+
+variable "dice_frontend_logout_uri" {
+  type        = string
+  description = "frontchannel logout url for the dice frontend"
 }
 
 variable "dev_group_members" {

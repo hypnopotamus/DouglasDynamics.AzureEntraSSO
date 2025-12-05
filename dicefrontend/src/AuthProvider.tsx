@@ -1,25 +1,36 @@
-import { EventType, PublicClientApplication, type AuthenticationResult, type EventPayload } from "@azure/msal-browser";
+import { EventType, PublicClientApplication, type AccountInfo, type AuthenticationResult, type EventPayload } from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
-import type { PropsWithChildren } from "react";
+import { type PropsWithChildren } from "react";
 import { authConfig } from "./authConfig";
 
 const msalInstance = new PublicClientApplication(authConfig);
 await msalInstance.initialize();
+msalInstance.enableAccountStorageEvents();
 
-if (!msalInstance.getActiveAccount() && msalInstance.getAllAccounts().length > 0) {
-    //todo: ssoSilent
-    msalInstance.setActiveAccount(msalInstance.getAllAccounts()[0]);
-}
+const isAccountInfo = (info?: any): info is AccountInfo =>
+    info != null && 'username' in info
 
 const isAuthenticationResult = (payload?: EventPayload): payload is AuthenticationResult =>
-    payload != null && 'account' in (payload as AuthenticationResult);
+    payload != null && 'account' in payload && isAccountInfo(payload.account);
+
+const isAuthenticationSuccess = (event: { eventType: EventType, payload: EventPayload }): event is { eventType: EventType, payload: AuthenticationResult } =>
+    (event.eventType === EventType.LOGIN_SUCCESS || event.eventType === EventType.SSO_SILENT_SUCCESS)
+    && isAuthenticationResult(event.payload);
+
+const isExternalAuthenticationSuccess = (event: { eventType: EventType, payload: EventPayload }): event is { eventType: EventType, payload: AccountInfo } =>
+    (event.eventType === EventType.ACCOUNT_ADDED)
+    && isAccountInfo(event.payload);
 
 msalInstance.addEventCallback((event) => {
-    if (event.eventType === EventType.LOGIN_SUCCESS && isAuthenticationResult(event.payload)) {
-        const account = event.payload.account;
-        msalInstance.setActiveAccount(account);
+    if (isAuthenticationSuccess(event)) {
+        msalInstance.setActiveAccount(event.payload.account);
+    }
+
+    if (isExternalAuthenticationSuccess(event)) {
+        msalInstance.setActiveAccount(event.payload);
     }
 });
+
 
 export const AuthProvider = ({ children }: PropsWithChildren) => (
     <MsalProvider instance={msalInstance}>

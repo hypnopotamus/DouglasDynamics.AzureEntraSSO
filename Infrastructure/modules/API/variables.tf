@@ -35,11 +35,6 @@ variable "downstream_apis" {
   default     = {}
 }
 
-variable "oauth_redirect_uris" {
-  type    = list(string)
-  default = []
-}
-
 variable "key_vault_id" {
   type = string
 }

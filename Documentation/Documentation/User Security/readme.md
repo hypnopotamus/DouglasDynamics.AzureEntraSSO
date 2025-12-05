@@ -19,3 +19,13 @@ As far as Web API B is concerned it could have been called by Web API A, a new W
 - `Microsoft.Identity.Web.DownstreamApi` takes care of the OBO flow magic for us for ASP.net applications.
 - `@azure/msal-angular` + `@azure/msal-browser` does the SPA login work for the angular frontend (authorization code flow + PKCE)
 - `@azure/msal-react` + `@azure/msal-browser` does the SPA login work for the react frontend (authorization code flow + PKCE)
+
+msal.js enables cross-tab events about login so that if you have an application open in two tabs or two browser windows and log into or out of one of them the msal events get transmitted to the other and both update their state at the same time
+
+## SSO
+
+It's worth noting for local development that the single sign in / out functionality is not fully working because of browser security limitations.
+
+Browsers will stop cross-domain access to cookies and local storage which prevents SSO from fully functioning because the frontend applications and entra are on different domains; `localhost:{port1}` is a different domain than `localhost:{port2}` which are both clearly different domains from `login.microsoft.com`.
+
+An easily observed place where this is _not_ working is the frontchannel logout configuration (single logout or SLO); the logout redirect will successfully visit both of the configured `frontchannel-logout` routes (console logs e.g. can be seen if they write them) but the msal.js events and updates are not received by the application even if you have it open in another tab. The hidden iframe is blocked from accessing the cookies and localstorage of the SPA applications _unless_ entra were to be on a custom domain that matched the SPA application so that the iframe were seen as same domain by the browser.  For local development an entra custom domain and a host file entry could probably achieve this.

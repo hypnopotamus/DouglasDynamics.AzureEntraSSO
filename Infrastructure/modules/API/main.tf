@@ -88,7 +88,7 @@ resource "azurerm_role_assignment" "configuration_writer" {
 resource "azuread_application_registration" "registration" {
   display_name = var.name
 
-  implicit_access_token_issuance_enabled = length(var.oauth_redirect_uris) > 0
+  implicit_access_token_issuance_enabled = false
   implicit_id_token_issuance_enabled     = true
 }
 
@@ -139,15 +139,6 @@ resource "azuread_app_role_assignment" "app_role_assignments" {
   app_role_id         = local.role_members[count.index].id
   principal_object_id = local.role_members[count.index].member
   resource_object_id  = azuread_service_principal.registration_principal.object_id
-}
-
-resource "azuread_application_redirect_uris" "spa_redirects" {
-  count = length(var.oauth_redirect_uris) == 0 ? 0 : 1
-
-  application_id = azuread_application_registration.registration.id
-  type           = "SPA"
-
-  redirect_uris = var.oauth_redirect_uris
 }
 
 resource "azurerm_key_vault_certificate" "cert" {

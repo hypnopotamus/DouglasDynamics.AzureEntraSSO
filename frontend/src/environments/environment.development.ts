@@ -1,4 +1,7 @@
 import { appConfigEnvironment } from './appConfig';
 import { mergeConfiguration } from './mergeConfiguration';
 
-export const environment = mergeConfiguration(appConfigEnvironment, { auth: { redirectUri: 'http://localhost:64634' } });
+export const environment = mergeConfiguration(
+    appConfigEnvironment,
+    { auth: { redirectUri: 'https://localhost:64634' } }
+);

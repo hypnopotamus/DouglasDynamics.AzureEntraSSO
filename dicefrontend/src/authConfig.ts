@@ -1,4 +1,4 @@
-import type { Configuration, RedirectRequest } from "@azure/msal-browser";
+import type { Configuration, EndSessionRequest, RedirectRequest } from "@azure/msal-browser";
 import { LogLevel } from '@azure/msal-browser';
 
 //https://learn.microsoft.com/en-us/entra/identity-platform/tutorial-single-page-app-react-prepare-app?tabs=workforce-tenant
@@ -15,6 +15,7 @@ export const authConfig: Configuration = {
         storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
     },
     system: {
+        allowRedirectInIframe: true,
         loggerOptions: {
             loggerCallback: (level, message, containsPii) => {
                 if (containsPii) {
@@ -42,7 +43,8 @@ export const authConfig: Configuration = {
 };
 
 export const loginRequest: RedirectRequest = {
-    //todo: make sure the aud is no longer 00000003-0000-0000-c000-000000000000 anmd scp is not "opend profile email"
-    //  is the requested scope in the jwt?
     scopes: [`api://${import.meta.env.VITE_AUTH_CLIENT_ID}/access`],
 };
+
+export const logoutRequest : EndSessionRequest = {
+}
